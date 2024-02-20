@@ -1,39 +1,58 @@
-const express = require('express');
-const app = express();
-const port = process.env.PORT || 1997;
-const bodyParser = require('body-parser');
+const express = require('express')
+const app = express()
+const port = 3001
+const http = require('http')
+const server = http.createServer(app)
+const { dataLog1 } = require('./controller/setTanam')
 const cors = require('cors');
 const { router: routerWorker } = require('./controller/app.js');
+const { Server } = require('socket.io')
+require('dotenv').config()
 
-app.use(cors());
-
-app.use(express.json({ extended: true, limit: '20mb' }));
-app.use(express.urlencoded({ extended: true, limit: '20mb' }));
-
-app.use(
-  bodyParser.json({
-    extended: true,
-    limit: '50mb',
-  })
-);
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-    limit: '50mb',
-  })
-);
-
-app.use(express.static('static'));
+app.use(cors({ origin: ['https://smart-agriculture-afandiakbar16.vercel.app', 'http://localhost:3000'] }))
+app.use(express.json({ extended: true, limit: '20mb' }))
+app.use(express.urlencoded({ extended: true, limit: '20mb' }))
+app.use(express.static('public'))
 
 app.get('/', (req, res) => {
   res.json({
     msg: 'selamat datang di API',
-  });
-});
-app.use('worker', routerWorker);
+  })
+})
 
-app.use('/users', require('./routes/userRoutes'));
+const io = new Server(server, {
+  cors: {
+    origin: ['https://smart-agriculture-afandiakbar16.vercel.app', 'http://localhost:3000'],
+    methods: ["GET", "POST"]
+  }
+})
 
-app.listen(port, () => {
-  console.log('server berjalan di port' + port);
-});
+
+app.use('/worker', routerWorker)
+app.use('/datalog', require('./routes/getAllLog'))
+app.use('/send', require('./routes/sendRMQ'))
+
+
+//connection Socket IO
+const dataToClient = (client, data) => {
+  client.emit('dataUpdate', data)
+}
+
+io.on('connection', (socket) => {
+  console.log('User Connected')
+  socket.on("send_message", async (data) => {
+    try {
+      const { IDUSER } = data
+      // console.log(data)
+      const value = await dataLog1({ IDUSER })
+      // console.log(IDUSER)
+      dataToClient(socket, value)
+    } catch (error) {
+      console.error('ERROR TERJADI SAAT DAPATKAN DATA', error)
+    }
+  })
+})
+
+server.listen(process.env.PORT, () => {
+  console.log('SERVER RUNNING IN PORT : ' + process.env.PORT)
+})
