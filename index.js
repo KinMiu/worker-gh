@@ -3,7 +3,7 @@ const app = express()
 const port = 3001
 const http = require('http')
 const server = http.createServer(app)
-const { dataLog1 } = require('./controller/setTanam')
+const { dataLog1 } = require('./controller/setTanam.js')
 const cors = require('cors');
 const { router: routerWorker } = require('./controller/app.js');
 const { Server } = require('socket.io')
@@ -29,8 +29,8 @@ const io = new Server(server, {
 
 
 app.use('/worker', routerWorker)
-app.use('/datalog', require('./routes/getAllLog'))
-app.use('/send', require('./routes/sendRMQ'))
+app.use('/datalog', require('./routes/getAllLog.js'))
+app.use('/send', require('./routes/sendRMQ.js'))
 
 
 //connection Socket IO

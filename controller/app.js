@@ -132,7 +132,7 @@ const save = async (responseData) => {
   }
 }
 
-function koneksi() {
+async function koneksi() {
   mongo.connect('mongodb+srv://admin:uo5sgXzc9tz9mdWo@cluster0.c84ve12.mongodb.net/sensor?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -164,7 +164,7 @@ function koneksi() {
 //   }
 // }
 
-function reconnect() {
+async function reconnect() {
   console.log("Menghubungkan kembali ke RabbitMQ");
   koneksiRmq();
 }
