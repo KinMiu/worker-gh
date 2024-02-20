@@ -41,7 +41,7 @@ async function koneksiRmq() {
           setInterval(async () => {
             try {
 
-              const res = await axios.get('http://localhost:3000/alat/get')
+              const res = await axios.get('https://smart-agriculture-indol.vercel.app/alat/get')
               console.log('SUCCESS CONNECTING TO SERVICE 1')
               const data = res.data.data
 

@@ -9,7 +9,7 @@ const { router: routerWorker } = require('./controller/app.js');
 const { Server } = require('socket.io')
 require('dotenv').config()
 
-app.use(cors({ origin: ['https://smart-agriculture-afandiakbar16.vercel.app', 'http://localhost:3000'] }))
+app.use(cors({ origin: ['https://smart-agriculture-afandiakbar16.vercel.app', 'https://smart-agriculture-indol.vercel.app/'] }))
 app.use(express.json({ extended: true, limit: '20mb' }))
 app.use(express.urlencoded({ extended: true, limit: '20mb' }))
 app.use(express.static('public'))
@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 
 const io = new Server(server, {
   cors: {
-    origin: ['https://smart-agriculture-afandiakbar16.vercel.app', 'http://localhost:3000'],
+    origin: ['https://smart-agriculture-afandiakbar16.vercel.app', 'https://smart-agriculture-indol.vercel.app/'],
     methods: ["GET", "POST"]
   }
 })

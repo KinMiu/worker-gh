@@ -12,7 +12,7 @@ const dataLog1 = async ({ IDUSER }) => {
   // console.log(IDUSER)
   try {
     // const user = 'c7168458-ec88-4515-afd3-9b7f13489501'
-    const res = await axios.get(`http://localhost:3000/settanam/getbyuser/${IDUSER}`)
+    const res = await axios.get(`https://smart-agriculture-indol.vercel.app/settanam/getbyuser/${IDUSER}`)
     const data = res.data.data
     // console.log(data)
     // const data = await model.find({ IDUSER: IDUSER })
@@ -92,7 +92,7 @@ const dataLog1 = async ({ IDUSER }) => {
 
 const getAllDataByID = async (id) => {
   try {
-    const res = await axios.get(`http://localhost:3000/alat/get/${id}`)
+    const res = await axios.get(`https://smart-agriculture-indol.vercel.app/alat/get/${id}`)
     const data = res.data.data
     const sensor = await getDataFromFile(data.MAC_ADDRESS)
 
