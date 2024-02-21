@@ -41,7 +41,7 @@ async function koneksiRmq() {
           setInterval(async () => {
             try {
 
-              const res = await axios.get('https://smart-agriculture-indol.vercel.app/alat/get')
+              const res = await axios.get('https://backend-tes-taupe.vercel.app/alat/get')
               console.log('SUCCESS CONNECTING TO SERVICE 1')
               const data = res.data.data
 
@@ -57,7 +57,7 @@ async function koneksiRmq() {
               }
             } catch (error) {
               reconnect()
-              console.log('SERVICE 1 FAIL TO CONNECTED')
+              console.log('SERVICE 1 FAIL TO CONNECTED : ', error)
             }
           }, 10000)
         }
