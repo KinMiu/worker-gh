@@ -24,7 +24,7 @@ app.use(
   cors()
 );
 
-const io = new Server(server, { cors: { origin: ["http://localhost:3000", "http://192.168.61.62:8080", 'http://smart-agriculture-afandiakbar16.vercel.app'] } })
+const io = new Server(server, { cors: { origin: ["http://localhost:3000", "http://192.168.61.62:8080", 'https://smart-agriculture-afandiakbar16.vercel.app'] } })
 
 
 app.use('/worker', routerWorker)
