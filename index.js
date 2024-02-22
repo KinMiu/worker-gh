@@ -7,9 +7,10 @@ const { dataLog1 } = require('./controller/setTanam.js')
 const cors = require('cors');
 const { router: routerWorker } = require('./controller/app.js');
 const { Server } = require('socket.io')
+const { access } = require('fs')
 require('dotenv').config()
 
-app.use(cors({ origin: ['https://smart-agriculture-afandiakbar16.vercel.app', 'https://backend-tes-taupe.vercel.app/'] }))
+app.use(cors({ origin: ['http://192.168.61.62:8080', 'https://backend-tes-taupe.vercel.app/'] }))
 app.use(express.json({ extended: true, limit: '20mb' }))
 app.use(express.urlencoded({ extended: true, limit: '20mb' }))
 app.use(express.static('public'))
@@ -22,8 +23,8 @@ app.get('/', (req, res) => {
 
 const io = new Server(server, {
   cors: {
-    origin: ['https://smart-agriculture-afandiakbar16.vercel.app', 'https://backend-tes-taupe.vercel.app/'],
-    methods: ["GET", "POST"]
+    origin: ['https://smart-agriculture-afandiakbar16.vercel.app', 'https://backend-tes-taupe.vercel.app'],
+    methods: ["GET", "POST"],
   }
 })
 
@@ -43,6 +44,7 @@ io.on('connection', (socket) => {
   socket.on("send_message", async (data) => {
     try {
       const { IDUSER } = data
+      console.log(IDUSER)
       // console.log(data)
       const value = await dataLog1({ IDUSER })
       // console.log(IDUSER)
