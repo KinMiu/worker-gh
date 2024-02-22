@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const port = 3001
@@ -8,11 +9,10 @@ const cors = require('cors');
 const { router: routerWorker } = require('./controller/app.js');
 const { Server } = require('socket.io')
 const { access } = require('fs')
-require('dotenv').config()
 
-app.use(cors({ origin: ['http://192.168.61.62:8080', 'https://backend-tes-taupe.vercel.app/'] }))
-app.use(express.json({ extended: true, limit: '20mb' }))
-app.use(express.urlencoded({ extended: true, limit: '20mb' }))
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
 
 app.get('/', (req, res) => {
@@ -20,13 +20,11 @@ app.get('/', (req, res) => {
     msg: 'selamat datang di API',
   })
 })
+app.use(
+  cors()
+);
 
-const io = new Server(server, {
-  cors: {
-    origin: ['https://smart-agriculture-afandiakbar16.vercel.app', 'https://backend-tes-taupe.vercel.app'],
-    methods: ["GET", "POST"],
-  }
-})
+const io = new Server(server, { cors: { origin: ["http://localhost:3000", "http://192.168.61.62:8080", 'http://smart-agriculture-afandiakbar16.vercel.app'] } })
 
 
 app.use('/worker', routerWorker)
@@ -45,7 +43,7 @@ io.on('connection', (socket) => {
     try {
       const { IDUSER } = data
       console.log(IDUSER)
-      // console.log(data)
+      console.log("data")
       const value = await dataLog1({ IDUSER })
       // console.log(IDUSER)
       dataToClient(socket, value)
